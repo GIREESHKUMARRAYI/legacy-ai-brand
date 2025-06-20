@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Mail, Download, ExternalLink } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Download, ExternalLink, Palette, Code, Cpu, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -16,6 +16,7 @@ const Index = () => {
       tech: ["Python", "PyTorch", "Vision Transformers", "Computer Vision"],
       category: "AI/ML",
       image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      badges: ["MERN Full-Stack", "UI Designed by Me"]
     },
     {
       title: "Voice Translation Using LLMs",
@@ -23,6 +24,7 @@ const Index = () => {
       tech: ["Python", "Transformers", "Speech Processing", "NLP"],
       category: "NLP",
       image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+      badges: ["Backend from Scratch"]
     },
     {
       title: "AI-Powered Profile Matching System",
@@ -30,6 +32,7 @@ const Index = () => {
       tech: ["Machine Learning", "Python", "scikit-learn", "Data Analysis"],
       category: "ML",
       image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+      badges: ["MERN Full-Stack", "Figma Design"]
     }
   ];
 
@@ -38,9 +41,33 @@ const Index = () => {
     "NLP", "Machine Learning", "Deep Learning", "BERT", "YOLO", "GANs"
   ];
 
+  // What I Do Cards
+  const services = [
+    {
+      icon: <Cpu className="h-8 w-8" />,
+      title: "AI/ML Models",
+      description: "Vision Transformers, LLMs, CNNs, and custom deep learning solutions"
+    },
+    {
+      icon: <Code className="h-8 w-8" />,
+      title: "MERN Development",
+      description: "Full-stack web applications with MongoDB, Express, React, and Node.js"
+    },
+    {
+      icon: <Palette className="h-8 w-8" />,
+      title: "Creative Design",
+      description: "UI/UX design, graphics, posters, and digital branding solutions"
+    },
+    {
+      icon: <Briefcase className="h-8 w-8" />,
+      title: "Freelance Projects",
+      description: "Custom solutions for startups and enterprises with proven results"
+    }
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'projects', 'contact'];
+      const sections = ['home', 'about', 'services', 'projects', 'contact'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -74,19 +101,37 @@ const Index = () => {
               Giri
             </motion.div>
             <div className="hidden md:flex space-x-8">
-              {['Home', 'About', 'Projects', 'Contact'].map((item) => (
-                <motion.a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  whileHover={{ scale: 1.1, color: "#FFA726" }}
-                  className={`transition-all duration-300 ${
-                    activeSection === item.toLowerCase() 
-                      ? 'text-[#FFA726] border-b-2 border-[#FFA726]' 
-                      : 'text-[#ECECEC] hover:text-[#6C63FF]'
-                  }`}
-                >
-                  {item}
-                </motion.a>
+              {[
+                { name: 'Home', url: '#home' },
+                { name: 'About', url: '#about' },
+                { name: 'Projects', url: '#projects' },
+                { name: 'Designs', url: '/designs' },
+                { name: 'Certificates', url: '/certificates' },
+                { name: 'Blog', url: '/blog' },
+                { name: 'Contact', url: '#contact' }
+              ].map((item) => (
+                <motion.div key={item.name}>
+                  {item.url.startsWith('#') ? (
+                    <motion.a
+                      href={item.url}
+                      whileHover={{ scale: 1.1, color: "#FFA726" }}
+                      className={`transition-all duration-300 ${
+                        activeSection === item.url.slice(1) 
+                          ? 'text-[#FFA726] border-b-2 border-[#FFA726]' 
+                          : 'text-[#ECECEC] hover:text-[#6C63FF]'
+                      }`}
+                    >
+                      {item.name}
+                    </motion.a>
+                  ) : (
+                    <Link
+                      to={item.url}
+                      className="text-[#ECECEC] hover:text-[#6C63FF] transition-all duration-300 hover:scale-110"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </motion.div>
               ))}
             </div>
           </div>
@@ -258,8 +303,59 @@ const Index = () => {
         </div>
       </section>
 
+      {/* What I Do Section */}
+      <section id="services" className="py-20 bg-[#1A1F3C]">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              What I <span className="text-[#6C63FF]">Do</span>
+            </h2>
+            <p className="text-xl text-[#B0B8C1] max-w-2xl mx-auto">
+              Combining technical expertise with creative vision to deliver comprehensive solutions.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10, scale: 1.05 }}
+                className="group"
+              >
+                <Card className="bg-[#2D1B69] border-[#6C63FF]/30 hover:border-[#FFA726]/50 transition-all duration-300 h-full">
+                  <CardContent className="p-6 text-center">
+                    <motion.div 
+                      className="text-[#6C63FF] mb-4 flex justify-center group-hover:text-[#FFA726] transition-colors"
+                      whileHover={{ rotate: 10 }}
+                    >
+                      {service.icon}
+                    </motion.div>
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-[#B0B8C1] text-sm">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-[#1A1F3C]">
+      <section id="projects" className="py-20 bg-[#F9FAFC] text-[#1A1F3C]">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -271,8 +367,8 @@ const Index = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Featured <span className="text-[#6C63FF]">Projects</span>
             </h2>
-            <p className="text-xl text-[#B0B8C1] max-w-2xl mx-auto">
-              Showcasing my best work in AI/ML with real-world impact and innovative solutions.
+            <p className="text-xl text-[#4A5568] max-w-2xl mx-auto">
+              Showcasing my best work in AI/ML and full-stack development with real-world impact.
             </p>
           </motion.div>
 
@@ -287,7 +383,7 @@ const Index = () => {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="group"
               >
-                <Card className="bg-[#2D1B69] border-[#6C63FF]/30 hover:border-[#FFA726]/50 transition-all duration-300 overflow-hidden">
+                <Card className="bg-white border-[#6C63FF]/30 hover:border-[#FFA726]/50 transition-all duration-300 overflow-hidden hover:shadow-xl">
                   <div className="relative overflow-hidden">
                     <img 
                       src={project.image} 
@@ -301,13 +397,14 @@ const Index = () => {
                   </div>
                   
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#FFA726] transition-colors">
+                    <h3 className="text-xl font-semibold text-[#1A1F3C] mb-3 group-hover:text-[#FFA726] transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-[#B0B8C1] mb-4 line-clamp-3">
+                    <p className="text-[#4A5568] mb-4 line-clamp-3">
                       {project.description}
                     </p>
                     
+                    {/* Tech Stack */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech.slice(0, 3).map((tech) => (
                         <Badge key={tech} variant="secondary" className="bg-[#6C63FF]/20 text-[#6C63FF] text-xs">
@@ -315,11 +412,20 @@ const Index = () => {
                         </Badge>
                       ))}
                     </div>
+
+                    {/* Project Badges */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.badges.map((badge) => (
+                        <Badge key={badge} className="bg-[#FFA726]/20 text-[#FFA726] text-xs border border-[#FFA726]/30">
+                          {badge}
+                        </Badge>
+                      ))}
+                    </div>
                     
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="border-[#FFA726] text-[#FFA726] hover:bg-[#FFA726] hover:text-[#1A1F3C] w-full"
+                      className="border-[#FFA726] text-[#FFA726] hover:bg-[#FFA726] hover:text-white w-full"
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       View Project
@@ -329,11 +435,25 @@ const Index = () => {
               </motion.div>
             ))}
           </div>
+
+          <div className="text-center mt-12">
+            <Link to="/designs">
+              <Button className="bg-[#6C63FF] hover:bg-[#5A52FF] text-white mr-4">
+                <Palette className="mr-2 h-4 w-4" />
+                View Design Works
+              </Button>
+            </Link>
+            <Link to="/certificates">
+              <Button variant="outline" className="border-[#FFA726] text-[#FFA726] hover:bg-[#FFA726] hover:text-white">
+                View Certificates
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-[#F9FAFC] text-[#1A1F3C]">
+      <section id="contact" className="py-20 bg-[#1A1F3C]">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
